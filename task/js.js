@@ -3,14 +3,16 @@ const {src, dest} = require('gulp');
 const plumber = require('gulp-plumber');
 const notify = require('gulp-notify');
 const babel = require('gulp-babel');
-const webpack = require('webpack-stream');
 const rename = require('gulp-rename')
 
 const path = require('../config/path.js');
 const app = require('../config/app.js');
 
 const js = () => {
-  return src(path.js.src, {sourcemaps: app.isDev})
+  return src([
+    path.js.src,
+    
+  ], {sourcemaps: app.isDev})
     .pipe(plumber({
       errorHandler: notify.onError(error => ({
         title: "js",
@@ -18,7 +20,6 @@ const js = () => {
       }))
     }))
     .pipe(babel())
-    .pipe(webpack(app.webpack))
     .pipe(rename({suffix: '.min'}))
     .pipe(dest(path.js.dest, {sourcemaps: app.isDev}))
 }
